@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\MailSenderAuth;
+//use App\Jobs\MailSenderAuth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -40,7 +40,7 @@ class UserController extends Controller
         $user->save();
 
         $url = URL::temporarySignedRoute('verify', now()->addMinutes(60), ['id' => $user->id]);
-        MailSenderAuth::dispatch($user, $url)->delay(1);
+        //MailSenderAuth::dispatch($user, $url)->delay(1);
 
         return response()->json(['Message' =>'Success...'], 201);
     }
