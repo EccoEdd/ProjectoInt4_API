@@ -51,6 +51,9 @@ class UserController extends Controller
         }
         $user = User::find($id);
 
+        if(!$user)
+            abort(401);
+
         if($user->status)
             return response()->json(['Message' => 'Already verified'],202);
 
@@ -91,6 +94,13 @@ class UserController extends Controller
         $request->user()->tokens()->delete();
         return response()->json([
             'Message' => 'See you next time'
+        ]);
+    }
+
+    public function userInformation(Request $request){
+        $user = User::find($request->user()->id);
+        return response()->json([
+           'Data' => $user
         ]);
     }
 }

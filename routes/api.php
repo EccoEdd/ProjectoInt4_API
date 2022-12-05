@@ -27,8 +27,11 @@ Route::prefix('v1')->group(function(){
     Route::prefix('user')->group(function(){
         Route::post('register', [UserController::class, 'newUser']);
         Route::post('logIn', [UserController::class, 'logIn']);
-        Route::delete('logOut', [UserController::class, 'logOut'])
-        ->middleware('auth:sanctum');
+        Route::middleware('auth:sanctum')->group(function(){
+            Route::delete('logOut', [UserController::class, 'logOut']);
+            Route::get('info', [UserController::class, 'userInformation'])
+            ->middleware('status');
+        });
     });
     Route::prefix('actions')->group(function(){
         Route::get('/verify/{id}', [UserController::class, 'verifyUser'])
