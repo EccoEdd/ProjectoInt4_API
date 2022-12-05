@@ -31,7 +31,7 @@ class UserController extends Controller
             ]
         ]);
         if ($validate->fails())
-            return response()->json(['errors' => $validate->errors()], 403);
+            return response()->json(['Message' => $validate->errors()], 403);
 
         $user = new User();
         $user->name = $request->name;
@@ -73,7 +73,7 @@ class UserController extends Controller
             ]
         ]);
         if ($validate->fails())
-            return response()->json(['errors' => $validate->errors()], 403);
+            return response()->json(['Message' => $validate->errors()], 403);
 
         $user = User::where("email", $request->email)->where("status", true)->first();
 
@@ -82,7 +82,7 @@ class UserController extends Controller
 
         $token = $user->createToken('auth_token')->plainTextToken;
         return response()->json([
-            'Message' => 'Welcome Back',
+            'Message' => 'Welcome',
             'token'   => $token
         ], 201);
     }
@@ -90,7 +90,7 @@ class UserController extends Controller
     public function logOut(Request $request){
         $request->user()->tokens()->delete();
         return response()->json([
-            'Message' => 'Success...'
+            'Message' => 'See you next time'
         ]);
     }
 }

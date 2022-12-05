@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdafruitApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::prefix('v1')->group(function(){
+    Route::middleware(['auth:sanctum', 'status'])->prefix('adafruit')->group(function(){
+        Route::get('humidity', [AdafruitApiController::class, '']);
+    });
     Route::prefix('user')->group(function(){
         Route::post('register', [UserController::class, 'newUser']);
         Route::post('logIn', [UserController::class, 'logIn']);
