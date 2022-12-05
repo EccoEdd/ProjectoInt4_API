@@ -27,10 +27,15 @@ Route::prefix('v1')->group(function(){
     Route::prefix('user')->group(function(){
         Route::post('register', [UserController::class, 'newUser']);
         Route::post('logIn', [UserController::class, 'logIn']);
+
         Route::middleware('auth:sanctum')->group(function(){
             Route::delete('logOut', [UserController::class, 'logOut']);
             Route::get('info', [UserController::class, 'userInformation'])
-            ->middleware('status');
+                ->middleware('status');
+
+            Route::delete('delete/{id}', [UserController::class, 'deleteUserData'])
+                ->where('id', '[0-9]+')
+                ->middleware('rol:a');
         });
     });
     Route::prefix('actions')->group(function(){

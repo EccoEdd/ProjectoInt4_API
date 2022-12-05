@@ -103,4 +103,15 @@ class UserController extends Controller
            'Data' => $user
         ]);
     }
+
+    public function deleteUserData(int $id){
+        $user = User::find($id);
+        if(!$user)
+            return response()->json(['Message' => 'User Doesn\'t Exists']);
+        $user->delete();
+        return response()->json([
+            'Message' => 'Data deleted',
+            'Data'    => $user
+        ]);
+    }
 }
