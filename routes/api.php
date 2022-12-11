@@ -25,7 +25,10 @@ Route::prefix('v1')->group(function(){
     Route::middleware(['auth:sanctum', 'status'])->prefix('incubator')->group(function(){
         Route::post('addInc', [IncubatorController::class, 'addIncubator']);
         Route::get('getData', [IncubatorController::class, 'showAllIncubators']);
+        Route::get('/{id}', [IncubatorController::class, 'showIncubator'])
+            ->where('id', '[0-9]+');
         Route::post('addVi', [IncubatorController::class, 'addVisitor']);
+        Route::delete('removeVi', [IncubatorController::class, 'removeVisitor']);
     });
 
     Route::prefix('user')->group(function(){

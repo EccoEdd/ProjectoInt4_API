@@ -48,6 +48,20 @@ class IncubatorController extends Controller
            'Message' => 'Success..'
         ], 201);
     }
+
+    public function showIncubator(Request $request, int $id){
+        $incubator = Incubator::find($id)->first();
+        error_log($incubator);
+        $owner = Ownership::query()
+            ->where('user_id','=', $request->user()->id)
+            ->where('incubator_id', '=', $id)
+            ->where('role_id', '=', 1)
+            ->first();
+        if(!$owner)
+            return response()->json(["Message" => "You don't own this incubator"]);
+        return response()->json(["Incubator" => $incubator]);
+    }
+
     public function showAllIncubators(Request $request){
         $ownership = Ownership::query()
             ->where('user_id', '=', $request->user()->id)
@@ -62,6 +76,7 @@ class IncubatorController extends Controller
             'Data'  => $ownership
         ]);
     }
+
     public function addVisitor(Request $request){
         $validate = Validator::make($request->all(),[
             'code' => 'required|exists:incubators',
@@ -102,6 +117,7 @@ class IncubatorController extends Controller
         NotificateVisitor::dispatch($visitor, $incubator)->delay(30)->onQueue('emails');
         return response()->json(["Message" => "Success..."], 201);
     }
+
     public function removeVisitor(Request $request){
         $validate = Validator::make($request->all(),[
             'code' => 'required|exists:incubators',
