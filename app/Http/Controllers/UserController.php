@@ -40,7 +40,7 @@ class UserController extends Controller
         $user->save();
 
         $url = URL::temporarySignedRoute('verify', now()->addMinutes(15), ['id' => $user->id]);
-        MailSenderAuth::dispatch($user, $url)->delay(60);
+        MailSenderAuth::dispatch($user, $url)->delay(60)->onQueue('emails');
 
         return response()->json(['Message' =>'You only have 14 minutes left to use the link at your email'], 201);
     }
