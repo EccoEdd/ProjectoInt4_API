@@ -50,7 +50,8 @@ class MailNotificateVisitor extends Mailable
             view: 'notifyVisitorNew',
             with: [
                 'name' => $this->user->name,
-                'incu'  =>  $this->incubator->code
+                'incu'  =>  $this->incubator->code,
+                'inname' => $this->incubator->name
             ]
         );
     }

@@ -7,6 +7,6 @@
 </head>
 <body>
     <h1>Hello {{ $name }}!</h1>
-    <h2>Now You have access to {{ $incu }}!</h2>
+    <h2>Now You have access to {{ $inname }} ({{ $incu }})!</h2>
 </body>
 </html>

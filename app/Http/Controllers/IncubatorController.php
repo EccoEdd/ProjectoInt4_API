@@ -16,13 +16,18 @@ class IncubatorController extends Controller
 {
     public function addIncubator(Request $request){
         $validate = Validator::make($request->all(),[
-            'code' => 'required|unique:incubators|size:5'
+            'code' => 'required|unique:incubators|size:5',
+            'name' => 'required|max:35'
         ],[
             'code' => [
                 'required' => 'You need the code of your incubator',
                 'unique'   => 'This Incubator already has been registered, you can still use it but you will
                                     need to ask for the Owner\'s permission',
                 'size'     => 'This code is only 5 characters long'
+            ],
+            'name' => [
+                'required' => 'You need a name for this incubator',
+                'max'      => 'You only have 35 characters long'
             ]
         ]);
         if ($validate->fails())
@@ -30,6 +35,7 @@ class IncubatorController extends Controller
 
         $incubator = new Incubator();
         $incubator->code = $request->code;
+        $incubator->name = $request->name;
         $incubator->save();
 
         $ownership = new Ownership();
@@ -56,7 +62,6 @@ class IncubatorController extends Controller
             'Data'  => $ownership
         ]);
     }
-
     public function addVisitor(Request $request){
         $validate = Validator::make($request->all(),[
             'code' => 'required|exists:incubators',
@@ -66,7 +71,7 @@ class IncubatorController extends Controller
                 'required' => 'You need the code of your incubator',
                 'exists'   => 'The incubator must exists'
             ],
-            'user' => [
+            'email' => [
                 'required' => 'You need the user to add as visitor',
                 'exists'   => 'The user must exists'
             ]
@@ -97,7 +102,43 @@ class IncubatorController extends Controller
         NotificateVisitor::dispatch($visitor, $incubator)->delay(30)->onQueue('emails');
         return response()->json(["Message" => "Success..."], 201);
     }
-    public function removeVisitor(){
+    public function removeVisitor(Request $request){
+        $validate = Validator::make($request->all(),[
+            'code' => 'required|exists:incubators',
+            'email' => 'required|exists:users'
+        ],[
+            'code' => [
+                'required' => 'You need the code of your incubator',
+                'exists'   => 'The incubator must exists'
+            ],
+            'user' => [
+                'required' => 'You need the user to add as visitor',
+                'exists'   => 'The user must exists'
+            ]
+        ]);
+        if ($validate->fails())
+            return response()->json(['Message' => $validate->errors()], 403);
 
+        $incubator = Incubator::query()
+            ->where('code', '=', $request->code)->first();
+
+        $owner = Ownership::query()
+            ->where('user_id','=', $request->user()->id)
+            ->where('incubator_id', '=', $incubator->id)
+            ->where('role_id', '=', 1)
+            ->first();
+
+        if(!$owner)
+            return response()->json(["Message" => "You don't own this incubator"]);
+
+        $visitor = User::query()
+            ->where('email', '=', $request->email)->first();
+
+        $data = Ownership::query()
+            ->where('user_id', '=', $visitor->id)
+            ->where('incubator_id', '=', $incubator->id)
+            ->first();
+        if(!$data)
+            return response()->json([]);
     }
 }
