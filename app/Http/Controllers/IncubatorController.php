@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\NotificateVisitor;
+use App\Jobs\NotifyRemovedVisitor;
+use App\Mail\NotifyRemoved;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -149,11 +151,15 @@ class IncubatorController extends Controller
         $visitor = User::query()
             ->where('email', '=', $request->email)->first();
 
+        if($visitor->id == $request->user()->id)
+            return response()->json(["Message" => "You can't remove yourself from ownership"]);
+
         $data = Ownership::query()
             ->where('user_id', '=', $visitor->id)
             ->where('incubator_id', '=', $incubator->id)
             ->first();
-        if(!$data)
-            return response()->json([]);
+        NotifyRemovedVisitor::dispatch($visitor, $incubator)->delay(30)->onQueue('emails');
+        $data->delete();
+        return response()->json(["Message" => "Removed"],203);
     }
 }

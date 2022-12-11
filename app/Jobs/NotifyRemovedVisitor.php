@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Mail\MailNotificateVisitor;
+use App\Mail\NotifyRemoved;
 use App\Models\Incubator;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
@@ -11,10 +11,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
-class NotificateVisitor implements ShouldQueue
+class NotifyRemovedVisitor implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     protected User $user;
@@ -36,6 +35,6 @@ class NotificateVisitor implements ShouldQueue
      */
     public function handle()
     {
-        Mail::to($this->user->email)->send(new MailNotificateVisitor($this->user, $this->incubator));
+        Mail::to($this->user->email)->send(new NotifyRemoved($this->user, $this->incubator));
     }
 }
