@@ -51,7 +51,6 @@ class IncubatorController extends Controller
 
     public function showIncubator(Request $request, int $id){
         $incubator = Incubator::find($id)->first();
-        error_log($incubator);
         $owner = Ownership::query()
             ->where('user_id','=', $request->user()->id)
             ->where('incubator_id', '=', $id)
