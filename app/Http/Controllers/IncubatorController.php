@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\NotificateVisitor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Ownership;
 use App\Models\Incubator;
@@ -46,22 +48,56 @@ class IncubatorController extends Controller
                 ->with('incubatorData')
                     ->with('roleData')
                         ->get();
+        $count = Ownership::query()->where('user_id', '=', $request->user()->id)
+            ->count('user_id');
 
         return response()->json([
-            'Data' => $ownership
+            'Count' => $count,
+            'Data'  => $ownership
         ]);
     }
 
     public function addVisitor(Request $request){
         $validate = Validator::make($request->all(),[
-            'code' => 'required'
+            'code' => 'required|exists:incubators',
+            'email' => 'required|exists:users'
         ],[
             'code' => [
-                'required' => 'You need the code of your incubator'
+                'required' => 'You need the code of your incubator',
+                'exists'   => 'The incubator must exists'
+            ],
+            'user' => [
+                'required' => 'You need the user to add as visitor',
+                'exists'   => 'The user must exists'
             ]
         ]);
         if ($validate->fails())
             return response()->json(['Message' => $validate->errors()], 403);
+        $incubator = Incubator::query()
+            ->where('code', '=', $request->code)->first();
+        $visitor = User::query()
+            ->where('email', '=', $request->email)->first();
+        $data = Ownership::query()
+            ->where('user_id', '=', $request->user()->id)
+            ->where('incubator_id', '=', $incubator->id)
+            ->first();
+        $seen = Ownership::query()
+            ->where('user_id', '=', $visitor->id)
+            ->where('incubator_id', '=', $incubator->id)
+            ->first();
+        if(!$data || ($data->role_id == 2))
+            return response()->json(["Message" => "You don't own this incubator"]);
+        if($seen)
+            return response()->json(["Message" => "You can already see this incubator"]);
+        $ownership = new Ownership();
+        $ownership->user_id = $visitor->id;
+        $ownership->incubator_id = $incubator->id;
+        $ownership->role_id = 2;
+        $ownership->save();
+        NotificateVisitor::dispatch($visitor, $incubator)->delay(30)->onQueue('emails');
+        return response()->json(["Message" => "Success..."], 201);
+    }
+    public function removeVisitor(){
 
     }
 }

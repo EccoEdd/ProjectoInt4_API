@@ -10,7 +10,7 @@ class Ownership extends Model
     use HasFactory;
 
     protected $hidden = [
-      'incubator_id', 'role_id', 'updated_at'
+      'updated_at'
     ];
 
     public function userData(){

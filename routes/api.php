@@ -3,7 +3,6 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\AdafruitApiController;
 use App\Http\Controllers\IncubatorController;
 
 /*
@@ -22,11 +21,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::prefix('v1')->group(function(){
-    Route::get('data', [AdafruitApiController::class, 'ledData']);
 
     Route::middleware(['auth:sanctum', 'status'])->prefix('incubator')->group(function(){
         Route::post('addInc', [IncubatorController::class, 'addIncubator']);
         Route::get('getData', [IncubatorController::class, 'showAllIncubators']);
+        Route::post('addVi', [IncubatorController::class, 'addVisitor']);
     });
 
     Route::prefix('user')->group(function(){

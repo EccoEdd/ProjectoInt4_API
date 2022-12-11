@@ -11,4 +11,7 @@ class Role extends Model
     protected $hidden = [
         'created_at', 'updated_at', 'id'
     ];
+    public function belongsOwner(){
+        return $this->belongsTo(Ownership::class, 'id', 'role_id');
+    }
 }
