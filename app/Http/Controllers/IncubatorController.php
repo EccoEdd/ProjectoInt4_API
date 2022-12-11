@@ -158,6 +158,8 @@ class IncubatorController extends Controller
             ->where('user_id', '=', $visitor->id)
             ->where('incubator_id', '=', $incubator->id)
             ->first();
+        if(!$data)
+            return response()->json(["Message" => "No registers"]);
         NotifyRemovedVisitor::dispatch($visitor, $incubator)->delay(30)->onQueue('emails');
         $data->delete();
         return response()->json(["Message" => "Removed"],203);
