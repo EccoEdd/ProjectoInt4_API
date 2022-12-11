@@ -27,6 +27,7 @@ Route::prefix('v1')->group(function(){
         Route::get('getData', [IncubatorController::class, 'showAllIncubators']);
         Route::get('/{id}', [IncubatorController::class, 'showIncubator'])
             ->where('id', '[0-9]+');
+        Route::get('visitors', [IncubatorController::class, 'showVisitors']);
         Route::post('addVi', [IncubatorController::class, 'addVisitor']);
         Route::delete('removeVi', [IncubatorController::class, 'removeVisitor']);
     });

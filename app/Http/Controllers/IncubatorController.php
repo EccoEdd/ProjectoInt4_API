@@ -119,6 +119,38 @@ class IncubatorController extends Controller
         return response()->json(["Message" => "Success..."], 201);
     }
 
+    public function showVisitors(Request $request){
+        $validate = Validator::make($request->all(),[
+            'code' => 'required|exists:incubators'
+        ],[
+            'code' => [
+                'required' => 'You need the code of your incubator',
+                'exists'   => 'The incubator must exists'
+            ]
+        ]);
+        if ($validate->fails())
+            return response()->json(['Message' => $validate->errors()], 403);
+        $incubator = Incubator::query()->where('code', '=', $request->code)->first();
+        $ownership = Ownership::query()
+            ->where('user_id', '=', $request->user()->id)
+            ->where('incubator_id', '=', $incubator->id)
+            ->first();
+        if(!$ownership)
+            return response()->json(["Message" => "You don't own this incubator"]);
+        $data = Ownership::query()
+            ->where('incubator_id', '=', $incubator->id)
+            ->where('role_id', '=', 2)
+            ->get();
+        $count = Ownership::query()
+            ->where('incubator_id', '=', $incubator->id)
+            ->where('role_id', '=', 2)
+            ->count();
+        return response()->json([
+            "Count" => $count,
+            "Visitors   "  => $data
+        ]);
+    }
+
     public function removeVisitor(Request $request){
         $validate = Validator::make($request->all(),[
             'code' => 'required|exists:incubators',
