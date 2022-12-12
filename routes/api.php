@@ -61,6 +61,8 @@ Route::prefix('v1')->group(function(){
             Route::delete('delete/{id}', [UserController::class, 'deleteUserData'])
                 ->where('id', '[0-9]+')
                 ->middleware('rol:a');
+            Route::get('/', [UserController::class, 'allUsers'])
+                ->middleware('rol:a');
         });
     });
     Route::prefix('actions')->group(function(){
