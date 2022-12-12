@@ -86,5 +86,4 @@ class DioxideController extends Controller
             "Data"  => $data
         ]);
     }
-
 }
