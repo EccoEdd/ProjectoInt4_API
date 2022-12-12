@@ -25,6 +25,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('hola', function (){
     \Illuminate\Support\Facades\Log::info("Hola Mundo");
+    return "Hola mundo";
 });
 
 Route::prefix('v1')->group(function(){
