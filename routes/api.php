@@ -23,7 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('hola', function (){
+Route::get('/hola', function (){
     \Illuminate\Support\Facades\Log::info("Hola Mundo");
     return "Hola mundo";
 });
