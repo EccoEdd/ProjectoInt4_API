@@ -7,6 +7,7 @@ use App\Http\Controllers\IncubatorController;
 use App\Http\Controllers\HumidityController;
 use App\Http\Controllers\TemperatureController;
 use App\Http\Controllers\DioxideController;
+use App\Http\Controllers\OwnershipController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +33,8 @@ Route::prefix('v1')->group(function(){
         Route::get('visitors', [IncubatorController::class, 'showVisitors']);
         Route::post('addVi', [IncubatorController::class, 'addVisitor']);
         Route::delete('removeVi', [IncubatorController::class, 'removeVisitor']);
+
+        Route::get('role', [OwnershipController::class, 'checkOwnership']);
     });
 
     Route::middleware(['auth:sanctum', 'status'])->prefix('data')->group(function(){
