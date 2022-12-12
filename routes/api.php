@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\IncubatorController;
 use App\Http\Controllers\HumidityController;
+use App\Http\Controllers\TemperatureController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,10 @@ Route::prefix('v1')->group(function(){
         Route::prefix('humidity')->group(function (){
            Route::get('last', [HumidityController::class, 'lastHumidityData']);
            Route::get('/', [HumidityController::class, 'humidityData']);
+        });
+        Route::prefix('temperature')->group(function (){
+            Route::get('last', [TemperatureController::class, 'lastTemperatureData']);
+            Route::get('/', [TemperatureController::class, 'temperatureData']);
         });
     });
 
