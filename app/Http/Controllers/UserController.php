@@ -39,10 +39,8 @@ class UserController extends Controller
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
         $user->save();
-        Log::info($user);
-        Log::info(env('TOKEN_ADAJ'));
         $url = URL::temporarySignedRoute('verify', now()->addMinutes(15), ['id' => $user->id]);
-        MailSenderAuth::dispatch($user, $url)->delay(60)->onQueue('emails');
+        MailSenderAuth::dispatch($user, $url)->delay(15);
 
         return response()->json(['Message' =>'You only have 14 minutes left to use the link at your email'], 201);
     }

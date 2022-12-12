@@ -115,7 +115,7 @@ class IncubatorController extends Controller
         $ownership->incubator_id = $incubator->id;
         $ownership->role_id = 2;
         $ownership->save();
-        NotificateVisitor::dispatch($visitor, $incubator)->delay(30)->onQueue('emails');
+        NotificateVisitor::dispatch($visitor, $incubator)->delay(30);
         return response()->json(["Message" => "Success..."], 201);
     }
 
@@ -192,7 +192,7 @@ class IncubatorController extends Controller
             ->first();
         if(!$data)
             return response()->json(["Message" => "No registers"]);
-        NotifyRemovedVisitor::dispatch($visitor, $incubator)->delay(30)->onQueue('emails');
+        NotifyRemovedVisitor::dispatch($visitor, $incubator)->delay(30);
         $data->delete();
         return response()->json(["Message" => "Removed"]);
     }
