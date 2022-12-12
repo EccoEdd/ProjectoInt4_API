@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 class ClearUnverifiedUsers extends Command
 {
@@ -28,8 +29,7 @@ class ClearUnverifiedUsers extends Command
      */
     public function handle()
     {
-        User::where('status','=',false)->delete();
-        $this->info('Cleared unverified users!');
+        $data = User::where('status','=',false)->get();
         return Command::SUCCESS;
     }
 }
