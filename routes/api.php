@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\IncubatorController;
+use App\Http\Controllers\HumidityController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,13 @@ Route::prefix('v1')->group(function(){
         Route::get('visitors', [IncubatorController::class, 'showVisitors']);
         Route::post('addVi', [IncubatorController::class, 'addVisitor']);
         Route::delete('removeVi', [IncubatorController::class, 'removeVisitor']);
+    });
+
+    Route::middleware(['auth:sanctum', 'status'])->prefix('data')->group(function(){
+        Route::prefix('humidity')->group(function (){
+           Route::get('last', [HumidityController::class, 'lastHumidityData']);
+           Route::get('/', [HumidityController::class, 'humidityData']);
+        });
     });
 
     Route::prefix('user')->group(function(){

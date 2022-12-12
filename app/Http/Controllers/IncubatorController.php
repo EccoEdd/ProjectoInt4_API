@@ -194,6 +194,6 @@ class IncubatorController extends Controller
             return response()->json(["Message" => "No registers"]);
         NotifyRemovedVisitor::dispatch($visitor, $incubator)->delay(30)->onQueue('emails');
         $data->delete();
-        return response()->json(["Message" => "Removed"],203);
+        return response()->json(["Message" => "Removed"]);
     }
 }
