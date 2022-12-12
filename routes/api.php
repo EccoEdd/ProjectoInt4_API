@@ -23,12 +23,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/hola', function (){
-    \Illuminate\Support\Facades\Log::info("Hola Mundo");
-    dd("Hola");
-    return "Hola mundo";
-});
-
 Route::prefix('v1')->group(function(){
     Route::middleware(['auth:sanctum', 'status'])->prefix('incubator')->group(function(){
         Route::post('addInc', [IncubatorController::class, 'addIncubator']);

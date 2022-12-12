@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\URL;
 class UserController extends Controller
 {
     public function newUser(Request $request){
+        Log::info("Hola Mundo");
         $validate = Validator::make($request->all(),[
             'name'  => 'required',
             'email' => 'required|unique:users|email:rfc,dns',
