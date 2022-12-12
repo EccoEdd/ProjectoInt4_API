@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('humidities', function (Blueprint $table) {
             $table->id();
             $table->unsignedTinyInteger('value')->nullable(false);
-            $table->string('identifier')->unique()->nullable(false);
+            $table->string('identifier')->nullable(false);
             $table->foreignId('incubator_id')->constrained('incubators');
             $table->timestamps();
         });
