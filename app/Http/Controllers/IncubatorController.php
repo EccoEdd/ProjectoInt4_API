@@ -60,7 +60,10 @@ class IncubatorController extends Controller
             ->first();
         if(!$owner)
             return response()->json(["Message" => "You don't own this incubator"]);
-        return response()->json(["Incubator" => $incubator]);
+        return response()->json([
+            'Msg' => "Success",
+            "Incubator" => $incubator
+        ]);
     }
 
     public function showAllIncubators(Request $request){
@@ -128,6 +131,7 @@ class IncubatorController extends Controller
                 'exists'   => 'The incubator must exists'
             ]
         ]);
+
         if ($validate->fails())
             return response()->json(['Message' => $validate->errors()], 403);
         $incubator = Incubator::query()->where('code', '=', $request->code)->first();
@@ -140,6 +144,7 @@ class IncubatorController extends Controller
         $data = Ownership::query()
             ->where('incubator_id', '=', $incubator->id)
             ->where('role_id', '=', 2)
+            ->with('userData')
             ->get();
         $count = Ownership::query()
             ->where('incubator_id', '=', $incubator->id)
