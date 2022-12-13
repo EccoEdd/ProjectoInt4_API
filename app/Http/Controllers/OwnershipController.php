@@ -18,8 +18,8 @@ class OwnershipController extends Controller
     }
 
     public function checkAdmin(Request $request){
-        $data = incubatorData::query()
-            ->with('Ownership')
+        $data = Incubator::query()
+            ->with('incubatorData')
             ->where('user_id', '=', $request->user()->id)
             ->where('role_id', '=', 1)
             ->get();
