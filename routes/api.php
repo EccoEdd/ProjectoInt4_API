@@ -25,6 +25,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::prefix('v1')->group(function(){
+    Route::get('last', [TemperatureController::class, 'lastData']);
+
     Route::middleware(['auth:sanctum', 'status'])->prefix('incubator')->group(function(){
         Route::post('addInc', [IncubatorController::class, 'addIncubator']);
         Route::get('getData', [IncubatorController::class, 'showAllIncubators']);

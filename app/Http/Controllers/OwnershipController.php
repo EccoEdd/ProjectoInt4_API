@@ -21,15 +21,18 @@ class OwnershipController extends Controller
         $data = Ownership::query()
             ->where('user_id', '=', $request->user()->id)
             ->where('role_id', '=', 1)
+            ->with('incubatorData')
             ->get();
         if(!$data)
             return response()->json(["Message" => "No access"]);
         return response()->json(["Data" => $data]);
     }
+
     public function checkVisitor(Request $request){
         $data = Ownership::query()
             ->where('user_id', '=', $request->user()->id)
             ->where('role_id', '=', 2)
+            ->with('incubatorData')
             ->get();
         if(!$data)
             return response()->json(["Message" => "No access"]);

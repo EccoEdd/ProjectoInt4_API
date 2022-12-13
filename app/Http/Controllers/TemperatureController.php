@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Validator;
 class TemperatureController extends Controller
 {
     protected string $userA = "JaredLoera";
-    protected string $tokenA = "aio_IbYF0720wrGNIrAbHZESAJKVYuYe";
+    protected string $tokenA = "aio_ohKO79LU7T0p1Baes8KhT9F0KnWV";
 
     public function lastTemperatureData(Request $request){
         $validate = Validator::make($request->all(),[
@@ -88,5 +88,11 @@ class TemperatureController extends Controller
             "Count" => $count,
             "Data"  => $data
         ]);
+    }
+
+    public function lastData(){
+        $response = Http::withHeaders(['X-AIO-Key' => $this->tokenA])
+            ->get('https://io.adafruit.com/api/v2/'.$this->userA.'/feeds/sendtemp/data?limit=1');
+        return $response;
     }
 }
