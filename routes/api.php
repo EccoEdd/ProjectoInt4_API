@@ -38,7 +38,7 @@ Route::prefix('v1')->group(function(){
 
         Route::get('visitors', [IncubatorController::class, 'showVisitors']);
         Route::post('addVi', [IncubatorController::class, 'addVisitor']);
-        Route::delete('removeVi', [IncubatorController::class, 'removeVisitor']);
+        Route::post('removeVi', [IncubatorController::class, 'removeVisitor']);
 
         Route::get('role', [OwnershipController::class, 'checkOwnership']);
         Route::get('admin', [OwnershipController::class, 'checkAdmin']);
