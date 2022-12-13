@@ -197,8 +197,22 @@ class IncubatorController extends Controller
         return response()->json(["Message" => "Removed"]);
     }
 
-    public function deleteIncubator(Request $request, int $id){
-        $incubator = Incubator::find($id);
+    public function deleteIncubator(Request $request){
+        $validate = Validator::make($request->all(),[
+            'code' => 'required|exists:incubators',
+        ],[
+            'code' => [
+                'required' => 'You need the code of your incubator',
+                'exists'   => 'The incubator must exists'
+            ]
+        ]);
+        if ($validate->fails())
+            return response()->json(['Message' => $validate->errors()], 403);
+
+        $incubator = Incubator::query()
+            ->where('code', '=', $request->code)
+            ->first();
+
         $owner = Ownership::query()
             ->where('user_id','=', $request->user()->id)
             ->where('incubator_id', '=', $incubator->id)

@@ -32,8 +32,7 @@ Route::prefix('v1')->group(function(){
         Route::get('/{id}', [IncubatorController::class, 'showIncubator'])
             ->where('id', '[0-9]+');
 
-        Route::delete('delete/{id}', [IncubatorController::class, 'deleteIncubator'])
-            ->where('id', '[0-9]+');
+        Route::delete('delete', [IncubatorController::class, 'deleteIncubator']);
 
         Route::get('visitors', [IncubatorController::class, 'showVisitors']);
         Route::post('addVi', [IncubatorController::class, 'addVisitor']);
