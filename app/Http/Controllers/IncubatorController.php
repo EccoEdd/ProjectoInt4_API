@@ -196,4 +196,22 @@ class IncubatorController extends Controller
         $data->delete();
         return response()->json(["Message" => "Removed"]);
     }
+
+    public function deleteIncubator(Request $request, int $id){
+        $incubator = Incubator::find($id);
+        $owner = Ownership::query()
+            ->where('user_id','=', $request->user()->id)
+            ->where('incubator_id', '=', $incubator->id)
+            ->where('role_id', '=', 1)
+            ->first();
+
+        if(!$owner)
+            return response()->json(["Message" => "You don't own this incubator"]);
+
+        $incubator->delete();
+        return response()->json([
+            "Message" => "Removed...",
+            "Data"    => $incubator
+        ]);
+    }
 }
