@@ -43,7 +43,9 @@ class OwnershipController extends Controller
 
         if(!$data)
             return response()->json(["Message" => "No access"]);
-        return response()->json($data);
+        return response()->json([
+            'Msg' => 'Here is YOU\'R DATA',
+            'Data' => $data
+        ]);
     }
-
 }
