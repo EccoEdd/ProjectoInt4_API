@@ -26,7 +26,7 @@ class OwnershipController extends Controller
 
         if(!$data)
             return response()->json(["Message" => "No access"]);
-        return response()->json([$data]);
+        return response()->json(["Data" => $data]);
     }
 
     public function checkVisitor(Request $request){
@@ -38,7 +38,7 @@ class OwnershipController extends Controller
 
         if(!$data)
             return response()->json(["Message" => "No access"]);
-        return response()->json([$data]);
+        return response()->json(["Data" => $data]);
     }
 
 }
