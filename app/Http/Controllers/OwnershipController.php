@@ -21,6 +21,7 @@ class OwnershipController extends Controller
         $data = Ownership::query()
             ->where('user_id', '=', $request->user()->id)
             ->where('role_id', '=', 1)
+            ->with('incubatorData')
             ->get();
 
         if(!$data)
@@ -32,6 +33,7 @@ class OwnershipController extends Controller
         $data = Ownership::query()
             ->where('user_id', '=', $request->user()->id)
             ->where('role_id', '=', 2)
+            ->with('incubatorData')
             ->get();
 
         if(!$data)
