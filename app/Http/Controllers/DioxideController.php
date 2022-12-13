@@ -12,6 +12,9 @@ use PhpParser\Node\Stmt\Do_;
 
 class DioxideController extends Controller
 {
+    protected string $userA = "JaredLoera";
+    protected string $tokenA = "aio_IbYF0720wrGNIrAbHZESAJKVYuYe";
+
     public function lastDioxideData(Request $request){
         $validate = Validator::make($request->all(),[
             'code' => 'required|size:5|exists:incubators',
@@ -35,8 +38,8 @@ class DioxideController extends Controller
         if(!$ownership)
             return response()->json(["Message" => 'Unauthorized']);
 
-        $response = Http::withHeaders(['X-AIO-Key' => env('TOKEN_ADAJ')])
-            ->get('https://io.adafruit.com/api/v2/'.env('USER_ADAJ').'/feeds/humo/data?limit=1');
+        $response = Http::withHeaders(['X-AIO-Key' => $this->tokenA])
+            ->get('https://io.adafruit.com/api/v2/'.$this->userA.'/feeds/humo/data?limit=1');
 
         $dioxideOld = Dioxide::query()
             ->where('identifier', '=', $response[0]['id'])

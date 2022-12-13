@@ -12,6 +12,9 @@ use Illuminate\Validation\Rules\In;
 
 class HumidityController extends Controller
 {
+    protected string $userA = "JaredLoera";
+    protected string $tokenA = "aio_IbYF0720wrGNIrAbHZESAJKVYuYe";
+
     public function lastHumidityData(Request $request){
         $validate = Validator::make($request->all(),[
             'code' => 'required|size:5|exists:incubators',
@@ -35,8 +38,8 @@ class HumidityController extends Controller
         if(!$ownership)
             return response()->json(["Message" => 'Un authorized']);
 
-        $response = Http::withHeaders(['X-AIO-Key' => env('TOKEN_ADAJ')])
-            ->get('https://io.adafruit.com/api/v2/'.env('USER_ADAJ').'/feeds/sendhum/data?limit=1');
+        $response = Http::withHeaders(['X-AIO-Key' => $this->tokenA])
+            ->get('https://io.adafruit.com/api/v2/'.$this->userA.'/feeds/sendhum/data?limit=1');
 
         $humidityOld = Humidity::query()
             ->where('identifier', '=', $response[0]['id'])
