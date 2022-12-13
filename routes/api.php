@@ -36,8 +36,8 @@ Route::prefix('v1')->group(function(){
 
         Route::delete('delete', [IncubatorController::class, 'deleteIncubator']);
 
-        Route::post('addVi', [IncubatorController::class, 'addVisitor']);
         Route::get('visitors', [IncubatorController::class, 'showVisitors']);
+        Route::post('addVi', [IncubatorController::class, 'addVisitor']);
         Route::post('removeVi', [IncubatorController::class, 'removeVisitor']);
 
         Route::get('role', [OwnershipController::class, 'checkOwnership']);
@@ -62,14 +62,12 @@ Route::prefix('v1')->group(function(){
 
     Route::prefix('user')->group(function(){
         Route::post('register', [UserController::class, 'newUser']);
-        Route::post('logIn', [UserController::class, 'logIn'])
-            ->middleware('status');
+        Route::post('logIn', [UserController::class, 'logIn']);
 
         Route::middleware('auth:sanctum')->group(function(){
-            Route::middleware('status')->group(function(){
-                Route::delete('logOut', [UserController::class, 'logOut']);
-                Route::get('info', [UserController::class, 'userInformation']);
-            });
+            Route::delete('logOut', [UserController::class, 'logOut']);
+            Route::get('info', [UserController::class, 'userInformation'])
+                ->middleware('status');
 
             Route::delete('delete/{id}', [UserController::class, 'deleteUserData'])
                 ->where('id', '[0-9]+')
