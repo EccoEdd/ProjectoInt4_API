@@ -18,15 +18,15 @@ class OwnershipController extends Controller
     }
 
     public function checkAdmin(Request $request){
-        $data = Incubator::query()
-            ->with('incubatorData')
+        $data = Ownership::query()
             ->where('user_id', '=', $request->user()->id)
             ->where('role_id', '=', 1)
+            ->with('incubatorData')
             ->get();
 
         if(!$data)
             return response()->json(["Message" => "No access"]);
-        return response()->json([$data]);
+        return response()->json($data->toJson());
     }
 
     public function checkVisitor(Request $request){
