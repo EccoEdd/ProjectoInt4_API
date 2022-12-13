@@ -20,7 +20,7 @@ class ClearUnverifiedUsers extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'This deletes all unverified users';
 
     /**
      * Execute the console command.
@@ -29,7 +29,7 @@ class ClearUnverifiedUsers extends Command
      */
     public function handle()
     {
-        $data = User::where('status','=',false)->get();
+        User::where('status','=',false)->delete();
         return Command::SUCCESS;
     }
 }

@@ -37,6 +37,8 @@ Route::prefix('v1')->group(function(){
         Route::delete('removeVi', [IncubatorController::class, 'removeVisitor']);
 
         Route::get('role', [OwnershipController::class, 'checkOwnership']);
+        Route::get('admin', [OwnershipController::class, 'checkAdmin']);
+        Route::get('visitor', [OwnershipController::class, 'checkVisitor']);
     });
 
     Route::middleware(['auth:sanctum', 'status'])->prefix('data')->group(function(){

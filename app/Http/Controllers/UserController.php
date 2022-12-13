@@ -115,6 +115,7 @@ class UserController extends Controller
             'Data'    => $user
         ]);
     }
+
     public function allUsers(){
         $data = User::all();
         $count = User::all()->count();
@@ -123,4 +124,6 @@ class UserController extends Controller
             "Data" =>  $data
         ]);
     }
+
+
 }

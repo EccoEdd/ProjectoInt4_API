@@ -12,7 +12,25 @@ class OwnershipController extends Controller
 {
     public function checkOwnership(Request $request){
         $data = Ownership::query()->where('user_id', '=', $request->user()->id)->get();
-        Log::info($data);
+        if(!$data)
+            return response()->json(["Message" => "No access"]);
+        return response()->json(["Data" => $data]);
+    }
+
+    public function checkAdmin(Request $request){
+        $data = Ownership::query()
+            ->where('user_id', '=', $request->user()->id)
+            ->where('role_id', '=', 1)
+            ->get();
+        if(!$data)
+            return response()->json(["Message" => "No access"]);
+        return response()->json(["Data" => $data]);
+    }
+    public function checkVisitor(Request $request){
+        $data = Ownership::query()
+            ->where('user_id', '=', $request->user()->id)
+            ->where('role_id', '=', 2)
+            ->get();
         if(!$data)
             return response()->json(["Message" => "No access"]);
         return response()->json(["Data" => $data]);
