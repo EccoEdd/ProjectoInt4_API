@@ -17,7 +17,8 @@ class OwnershipController extends Controller
         return response()->json(["Data" => $data]);
     }
 
-    public function checkAdmin(Request $request){
+    public function checkAdmin(Request $request): \Illuminate\Http\JsonResponse
+    {
         $data = Ownership::query()
             ->where('user_id', '=', $request->user()->id)
             ->where('role_id', '=', 1)
@@ -26,9 +27,8 @@ class OwnershipController extends Controller
 
         if(!$data)
             return response()->json(["Message" => "No access"]);
-        $data1 = json_encode($data);
 
-        return response()->json($data1);
+        return response()->json([$data]);
     }
 
     public function checkVisitor(Request $request){
