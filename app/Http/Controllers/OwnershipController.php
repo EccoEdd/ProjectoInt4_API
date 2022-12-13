@@ -23,6 +23,7 @@ class OwnershipController extends Controller
             ->where('role_id', '=', 1)
             ->with('incubatorData')
             ->get();
+
         if(!$data)
             return response()->json(["Message" => "No access"]);
         return response()->json(["Data" => $data]);
@@ -34,6 +35,7 @@ class OwnershipController extends Controller
             ->where('role_id', '=', 2)
             ->with('incubatorData')
             ->get();
+
         if(!$data)
             return response()->json(["Message" => "No access"]);
         return response()->json(["Data" => $data]);
