@@ -11,7 +11,11 @@ use Illuminate\Support\Facades\Validator;
 class OwnershipController extends Controller
 {
     public function checkOwnership(Request $request){
-        $data = Ownership::query()->where('user_id', '=', $request->user()->id)->get();
+        $data = Ownership::query()
+            ->where('user_id', '=', $request->user()->id)
+            ->with('incubatorData')
+            ->with('roleData')
+            ->get();
         if(!$data)
             return response()->json(["Message" => "No access"]);
         return response()->json(["Data" => $data]);
