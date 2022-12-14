@@ -246,7 +246,6 @@ class IncubatorController extends Controller
             ->first();
 
         return response()->json([
-            'Msg' => 'Is that you want?',
             'Data' => $data
         ]);
     }
