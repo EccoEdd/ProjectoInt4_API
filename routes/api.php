@@ -58,6 +58,7 @@ Route::prefix('v1')->group(function(){
             Route::get('last', [DioxideController::class, 'lastDioxideData']);
             Route::get('/', [DioxideController::class, 'dioxideData']);
         });
+        Route::get('/{id}', [IncubatorController::class, 'allDataDunno']);
     });
 
     Route::prefix('user')->group(function(){

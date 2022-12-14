@@ -233,4 +233,25 @@ class IncubatorController extends Controller
             "Data"    => $incubator
         ]);
     }
+    public function allDataDunno(Request $request, int $id){
+        $incubator = Incubator::query()->where('code', '=', $request->code)->first();
+
+        $ownership = Ownership::query()
+            ->where('user_id', '=', $request->user()->id)
+            ->where('incubator_id', '=', $incubator->id)
+            ->first();
+
+        if(!$ownership)
+            return response()->json(["Message" => 'Unauthorized']);
+
+        $data = Incubator::find($id)
+            ->with('allTemperature')
+            ->with('allHumidity')
+            ->with('allDioxide')
+            ->get;
+        return response()->json([
+            'Msg' => 'Is that you want?',
+            'Data' => $data
+        ]);
+    }
 }
