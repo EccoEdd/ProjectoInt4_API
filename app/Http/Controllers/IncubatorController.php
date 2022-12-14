@@ -236,7 +236,9 @@ class IncubatorController extends Controller
     public function allDataDunno(Request $request, int $id){
         $data = Incubator::find($id)
             ->with('allTemperature')
-            ->get();
+            ->with('allHumidity')
+            ->with('allDioxide')
+            ->first();
 
         return response()->json([
             'Msg' => 'Is that you want?',
