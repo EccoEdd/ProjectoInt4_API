@@ -37,8 +37,8 @@ class TemperatureController extends Controller
         if(!$ownership)
             return response()->json(["Message" => 'Unauthorized']);
 
-        $response = Http::withHeaders(['X-AIO-Key' => $this->tokenA])
-            ->get('https://io.adafruit.com/api/v2/'.$this->userA.'/feeds/sendtemp/data?limit=1');
+        $response = Http::withHeaders(['X-AIO-Key' => "llave"])
+            ->get('https://io.adafruit.com/api/v2/JaredLoera/feeds/sendtemp/data?limit=1');
 
         $temperatureOld = Temperature::query()
             ->where('identifier', '=', $response[0]['id'])
@@ -91,8 +91,9 @@ class TemperatureController extends Controller
     }
 
     public function lastData(){
-        $response = Http::withHeaders(['X-AIO-Key' => $this->tokenA])
-            ->get('https://io.adafruit.com/api/v2/'.$this->userA.'/feeds/sendtemp/data?limit=1');
+        $response = Http::withHeaders(['X-AIO-Key' => ""])
+            ->get('https://io.adafruit.com/api/v2/JaredLoera/feeds/sendtemp/data?limit=1');
+        error_log($response);
         return $response;
     }
 }
