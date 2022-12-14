@@ -58,7 +58,8 @@ Route::prefix('v1')->group(function(){
             Route::get('last', [DioxideController::class, 'lastDioxideData']);
             Route::get('/', [DioxideController::class, 'dioxideData']);
         });
-        Route::get('/{id}', [IncubatorController::class, 'allDataDunno']);
+        Route::get('/{id}', [IncubatorController::class, 'allDataDunno'])
+            ->where('id', '[0-9]+');
     });
 
     Route::prefix('user')->group(function(){

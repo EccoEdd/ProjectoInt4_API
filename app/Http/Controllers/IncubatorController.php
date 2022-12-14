@@ -248,7 +248,8 @@ class IncubatorController extends Controller
             ->with('allTemperature')
             ->with('allHumidity')
             ->with('allDioxide')
-            ->get;
+            ->get();
+
         return response()->json([
             'Msg' => 'Is that you want?',
             'Data' => $data
