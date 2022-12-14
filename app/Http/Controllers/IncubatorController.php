@@ -234,7 +234,7 @@ class IncubatorController extends Controller
         ]);
     }
     public function allDataDunno(Request $request, int $id){
-        $incubator = Incubator::query()->where('code', '=', $request->code)->first();
+        $incubator = Incubator::find($id);
 
         $ownership = Ownership::query()
             ->where('user_id', '=', $request->user()->id)
@@ -248,7 +248,7 @@ class IncubatorController extends Controller
             ->with('allTemperature')
             ->with('allHumidity')
             ->with('allDioxide')
-            ->get();
+            ->first();
 
         return response()->json([
             'Msg' => 'Is that you want?',
