@@ -233,8 +233,13 @@ class IncubatorController extends Controller
             "Data"    => $incubator
         ]);
     }
+    public function getAllData(){
+
+    }
     public function allDataDunno(Request $request, int $id){
-        $data = Incubator::find($id)
+
+        $data = Incubator::query()
+            ->where('id', '=', $id)
             ->with('allTemperature')
             ->with('allHumidity')
             ->with('allDioxide')
