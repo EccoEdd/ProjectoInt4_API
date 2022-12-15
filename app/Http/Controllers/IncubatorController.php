@@ -100,7 +100,9 @@ class IncubatorController extends Controller
         $incubator = Incubator::query()
             ->where('code', '=', $request->code)->first();
         $visitor = User::query()
-            ->where('email', '=', $request->email)->first();
+            ->where('email', '=', $request->email)->where('status', true)->first();
+        if(!$visitor)
+            return response()->json(["Msg" => "User not authenticated"]);
         $data = Ownership::query()
             ->where('user_id', '=', $request->user()->id)
             ->where('incubator_id', '=', $incubator->id)
@@ -233,10 +235,23 @@ class IncubatorController extends Controller
             "Data"    => $incubator
         ]);
     }
-    public function getAllData(){
 
-    }
     public function allDataDunno(Request $request, int $id){
+        $incubator = Incubator::query()
+            ->where('id', $id)
+            ->first();
+
+        if(!$incubator)
+            return response()->json(["Msg" => "You arent the owner"]);
+
+        $owner = Ownership::query()
+            ->where('user_id','=', $request->user()->id)
+            ->where('incubator_id', '=', $incubator->id)
+            ->where('role_id', '=', 1)
+            ->first();
+
+        if(!$owner)
+            return response()->json(["Message" => "You don't own this incubator"]);
 
         $data = Incubator::query()
             ->where('id', '=', $id)
