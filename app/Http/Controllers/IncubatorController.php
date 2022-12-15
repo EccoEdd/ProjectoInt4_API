@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Jobs\NotificateVisitor;
 use App\Jobs\NotifyRemovedVisitor;
 use App\Mail\NotifyRemoved;
+use App\Models\Temperature;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -253,6 +254,8 @@ class IncubatorController extends Controller
         if(!$owner)
             return response()->json(["Message" => "You don't own this incubator"]);
 
+        $temperature = Temperature::lastest()->where('incubator_id', '=', $id)->first();
+
         $data = Incubator::latest()
             ->where('id', '=', $id)
             ->with('allTemperature')
@@ -261,7 +264,7 @@ class IncubatorController extends Controller
             ->first();
 
         return response()->json([
-            'Data' => $data
+            'Data' => $temperature
         ]);
     }
 }
