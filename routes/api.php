@@ -30,6 +30,12 @@ Route::prefix('v1')->group(function(){
     Route::get('temperature/last/{id}', [TemperatureController::class, 'temperatureById'])
         ->where('id', '[0-9]+');
 
+    Route::get('humidity/last/{id}', [HumidityController::class, 'temperatureById'])
+        ->where('id', '[0-9]+');
+
+    Route::get('dioxide/last/{id}', [DioxideController::class, 'temperatureById'])
+        ->where('id', '[0-9]+');
+
     Route::middleware(['auth:sanctum', 'status'])->prefix('incubator')->group(function(){
         Route::post('addInc', [IncubatorController::class, 'addIncubator']);
         Route::get('getData', [IncubatorController::class, 'showAllIncubators']);

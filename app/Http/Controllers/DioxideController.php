@@ -89,4 +89,30 @@ class DioxideController extends Controller
             "Data"  => $data
         ]);
     }
+
+    public function temperatureById(Request $request, int $id){
+        $incubator = Incubator::find($id)->first();
+
+        $response = Http::withHeaders(['X-AIO-Key' => "llave"])
+            ->get('https://io.adafruit.com/api/v2/JaredLoera/feeds/humo/data?limit=1');
+
+        $temperatureOld = Dioxide::query()
+            ->where('identifier', '=', $response[0]['id'])
+            ->where('incubator_id', '=', $incubator->id)
+            ->first();
+
+        if($temperatureOld) {
+            $temperature = Dioxide::latest()->where('incubator_id', '=', $incubator->id)->first();
+            return response()->json(["Data" => $temperature]);
+        }
+
+        $temperature = new Dioxide();
+        $temperature->value = $response[0]['value'];
+        $temperature->identifier = $response[0]['id'];
+        $temperature->incubator_id = $incubator->id;
+        $temperature->save();
+
+        return response()->json(["Data" => $temperature]);
+    }
+
 }

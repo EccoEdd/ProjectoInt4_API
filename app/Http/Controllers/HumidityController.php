@@ -59,6 +59,32 @@ class HumidityController extends Controller
 
         return response()->json(["Data" => $humidity]);
     }
+
+    public function temperatureById(Request $request, int $id){
+        $incubator = Incubator::find($id)->first();
+
+        $response = Http::withHeaders(['X-AIO-Key' => "llave"])
+            ->get('https://io.adafruit.com/api/v2/JaredLoera/feeds/sendhum/data?limit=1');
+
+        $temperatureOld = Humidity::query()
+            ->where('identifier', '=', $response[0]['id'])
+            ->where('incubator_id', '=', $incubator->id)
+            ->first();
+
+        if($temperatureOld) {
+            $temperature = Humidity::latest()->where('incubator_id', '=', $incubator->id)->first();
+            return response()->json(["Data" => $temperature]);
+        }
+
+        $temperature = new Humidity();
+        $temperature->value = $response[0]['value'];
+        $temperature->identifier = $response[0]['id'];
+        $temperature->incubator_id = $incubator->id;
+        $temperature->save();
+
+        return response()->json(["Data" => $temperature]);
+    }
+
     public function humidityData(Request $request){
         $validate = Validator::make($request->all(),[
             'code' => 'required|size:5|exists:incubators',
