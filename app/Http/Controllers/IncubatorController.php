@@ -254,6 +254,8 @@ class IncubatorController extends Controller
         if(!$owner)
             return response()->json(["Message" => "You don't own this incubator"]);
 
+        $temp = Temperature::query()->where('incubator_id', '=', $id)->latest();
+
         $data = Incubator::latest()
             ->where('id', '=', $id)
             ->with('allTemperature')
@@ -262,7 +264,7 @@ class IncubatorController extends Controller
             ->first();
 
         return response()->json([
-            'Data' => $data
+            'Data' => $temp
         ]);
     }
 }
