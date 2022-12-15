@@ -96,20 +96,10 @@ class TemperatureController extends Controller
         $response = Http::withHeaders(['X-AIO-Key' => "llave"])
             ->get('https://io.adafruit.com/api/v2/JaredLoera/feeds/sendtemp/data?limit=1');
 
-        $temperatureOld = Temperature::query()
-            ->where('identifier', '=', $response[0]['id'])
-            ->where('incubator_id', '=', $incubator->id)
-            ->first();
-
-        if($temperatureOld) {
-            $temperature = Temperature::latest()->where('incubator_id', '=', $incubator->id)->first();
-            return response()->json(["Data" => $temperature]);
-        }
-
         $temperature = new Temperature();
         $temperature->value = $response[0]['value'];
         $temperature->identifier = $response[0]['id'];
-        $temperature->incubator_id = $incubator->id;
+        $temperature->incubator_id = $id;
         $temperature->save();
 
         return response()->json(["Data" => $temperature]);
