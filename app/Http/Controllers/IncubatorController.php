@@ -253,12 +253,12 @@ class IncubatorController extends Controller
         if(!$owner)
             return response()->json(["Message" => "You don't own this incubator"]);
 
-        $data = Incubator::query()
+        $data = Incubator::latest()
             ->where('id', '=', $id)
             ->with('allTemperature')
             ->with('allHumidity')
             ->with('allDioxide')
-            ->latest();
+            ->first();
 
         return response()->json([
             'Data' => $data
