@@ -92,8 +92,6 @@ class TemperatureController extends Controller
 
     public function temperatureById(Request $request, int $id){
         $incubator = Incubator::find($id)->first();
-        if($incubator)
-            return "No exists";
 
         $response = Http::withHeaders(['X-AIO-Key' => "llave"])
             ->get('https://io.adafruit.com/api/v2/JaredLoera/feeds/sendtemp/data?limit=1');
