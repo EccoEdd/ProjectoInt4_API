@@ -51,7 +51,7 @@ Route::prefix('v1')->group(function(){
            Route::get('/', [HumidityController::class, 'humidityData']);
         });
         Route::prefix('temperature')->group(function (){
-            Route::post('last', [TemperatureController::class, 'lastTemperatureData']);
+            Route::get('last', [TemperatureController::class, 'lastTemperatureData']);
             Route::get('/', [TemperatureController::class, 'temperatureData']);
         });
         Route::prefix('dioxide')->group(function(){
