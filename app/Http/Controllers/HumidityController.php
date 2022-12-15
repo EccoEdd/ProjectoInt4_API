@@ -63,7 +63,7 @@ class HumidityController extends Controller
 
     public function temperatureById(Request $request, int $id){
         $response = Http::withHeaders(['X-AIO-Key' => "llave"])
-            ->get('https://io.adafruit.com/api/v2/JaredLoera/feeds/sendtemp/data?limit=1');
+            ->get('https://io.adafruit.com/api/v2/JaredLoera/feeds/sendhum/data?limit=1');
 
         $temperature = new Humidity();
         $temperature->value = $response[0]['value'];

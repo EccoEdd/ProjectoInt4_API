@@ -260,13 +260,6 @@ class IncubatorController extends Controller
         $dio = Dioxide::latest()->where('incubator_id', '=', $id)->first();
         $hum = Humidity::latest()->where('incubator_id', '=', $id)->first();
 
-        $data = Incubator::latest()
-            ->where('id', '=', $id)
-            ->with('allTemperature')
-            ->with('allHumidity')
-            ->with('allDioxide')
-            ->first();
-
         return response()->json([
             'Humidity' => $hum,
             'Temperature' => $temp,
