@@ -258,7 +258,7 @@ class IncubatorController extends Controller
             ->with('allTemperature')
             ->with('allHumidity')
             ->with('allDioxide')
-            ->first();
+            ->last();
 
         return response()->json([
             'Data' => $data
