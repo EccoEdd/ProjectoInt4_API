@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Humidity;
 use App\Models\Incubator;
 use App\Models\Ownership;
+use App\Models\Temperature;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
@@ -61,25 +62,13 @@ class HumidityController extends Controller
     }
 
     public function temperatureById(Request $request, int $id){
-        $incubator = Incubator::find($id)->first();
-
         $response = Http::withHeaders(['X-AIO-Key' => "llave"])
-            ->get('https://io.adafruit.com/api/v2/JaredLoera/feeds/sendhum/data?limit=1');
-
-        $temperatureOld = Humidity::query()
-            ->where('identifier', '=', $response[0]['id'])
-            ->where('incubator_id', '=', $incubator->id)
-            ->first();
-
-        if($temperatureOld) {
-            $temperature = Humidity::latest()->where('incubator_id', '=', $incubator->id)->first();
-            return response()->json(["Data" => $temperature]);
-        }
+            ->get('https://io.adafruit.com/api/v2/JaredLoera/feeds/sendtemp/data?limit=1');
 
         $temperature = new Humidity();
         $temperature->value = $response[0]['value'];
         $temperature->identifier = $response[0]['id'];
-        $temperature->incubator_id = $incubator->id;
+        $temperature->incubator_id = $id;
         $temperature->save();
 
         return response()->json(["Data" => $temperature]);

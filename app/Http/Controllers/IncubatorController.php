@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Jobs\NotificateVisitor;
 use App\Jobs\NotifyRemovedVisitor;
 use App\Mail\NotifyRemoved;
+use App\Models\Dioxide;
+use App\Models\Humidity;
 use App\Models\Temperature;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -255,6 +257,8 @@ class IncubatorController extends Controller
             return response()->json(["Message" => "You don't own this incubator"]);
 
         $temp = Temperature::latest()->where('incubator_id', '=', $id)->first();
+        $dio = Dioxide::latest()->where('incubator_id', '=', $id)->first();
+        $hum = Humidity::latest()->where('incubator_id', '=', $id)->first();
 
         $data = Incubator::latest()
             ->where('id', '=', $id)
@@ -264,7 +268,9 @@ class IncubatorController extends Controller
             ->first();
 
         return response()->json([
-            'Data' => $temp
+            'Humidity' => $hum,
+            'Temperature' => $temp,
+            'Dioxide'   => $dio
         ]);
     }
 }
