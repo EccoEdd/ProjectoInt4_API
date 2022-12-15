@@ -255,10 +255,11 @@ class IncubatorController extends Controller
 
         $data = Incubator::query()
             ->where('id', '=', $id)
+            ->latest()
             ->with('allTemperature')
             ->with('allHumidity')
             ->with('allDioxide')
-            ->last();
+            ->first();
 
         return response()->json([
             'Data' => $data
